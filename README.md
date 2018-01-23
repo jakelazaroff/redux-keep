@@ -64,7 +64,7 @@ export function reducer (state, action) {
 
 ### Customizing 👩🏼‍🔧
 
-By default, your state will be stringified and parsed as JSON. If you need finer control over how your state is transformed, we accept two functions called just that!
+By default, your state will be stringified and parsed as JSON. If you need finer control over how your state is transformed, you can specify `save` and `load` functions:
 
 ```javascript
 keep({
@@ -86,7 +86,7 @@ keep({
 
 ### Writing your own storage 👨🏿‍🔬
 
-Writing your own storage is easy! It's just an object with three functions: `get`, `set`, and `remove`:
+Writing your own storage is simple! It's just an object with three functions: `get`, `set`, and `remove`.
 
 ```javascript
 export const localStorage = {

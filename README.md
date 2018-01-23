@@ -15,7 +15,7 @@ yarn add redux-keep
 
 ## Getting Started 🏎
 
-redux-keep makes persisting your store easy by using two ✌🏻 core Redux concepts: **selectors** and **reducers**.
+redux-keep makes persisting your store easy by using two core Redux concepts: **selectors** and **reducers**.
 
 ### Saving your state 💾
 
@@ -86,7 +86,7 @@ keep({
 
 ### Writing your own storage 👨🏿‍🔬
 
-Writing your own storage is easy 💪🏽! It's just an object with three functions: `get`, `set`, and `remove`:
+Writing your own storage is easy! It's just an object with three functions: `get`, `set`, and `remove`:
 
 ```javascript
 export const localStorage = {

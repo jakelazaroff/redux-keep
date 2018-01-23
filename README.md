@@ -9,7 +9,7 @@ npm install --save redux-keep
 
 or
 
-```
+```bash
 yarn add redux-keep
 ```
 

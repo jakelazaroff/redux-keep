@@ -7,28 +7,18 @@ export interface Storage {
 }
 
 export type Selector <SelectedState, Fullstate> = (state: Fullstate) => SelectedState;
-export type Save <SelectedState> = (key: string, state: SelectedState) => void;
-export type Load <SelectedState> = (key: string) => SelectedState | null;
+export type Save <SelectedState> = (key: string, state: SelectedState, storage: Storage) => void;
+export type Load <SelectedState> = (key: string, storage: Storage) => SelectedState | null;
 
-export interface BaseOptions <FullState, SelectedState> {
+export interface Options <FullState, SelectedState> {
   key: string;
   selector: Selector<SelectedState, FullState>;
-}
-
-export interface StorageOptions <Fullstate, SelectedState> extends BaseOptions<Fullstate, SelectedState> {
   storage: Storage;
   save?: Save<SelectedState>;
   load?: Load<SelectedState>;
 }
 
-export interface CustomOptions <Fullstate, SelectedState> extends BaseOptions<Fullstate, SelectedState> {
-  save: Save<SelectedState>;
-  load: Load<SelectedState>;
-}
-
-export interface Keep <FullState, SelectedState> {
-  key: string;
-  selector: Selector<SelectedState, FullState>;
+export interface Keep <FullState, SelectedState> extends Options<FullState, SelectedState> {
   save: Save<SelectedState>;
   load: Load<SelectedState>;
 }
@@ -44,14 +34,15 @@ function createLoad <S> (storage: Storage) {
   };
 }
 
-export function keep <F, S> (options: StorageOptions<F, S> | CustomOptions<F, S>): Keep<F, S> {
-  const { key, selector } = options;
+export function keep <F, S> (options: Options<F, S>): Keep<F, S> {
+  const { key, selector, storage } = options;
 
   return {
     key,
     selector,
-    save: options.save || createSave((options as StorageOptions<F, S>).storage),
-    load: options.load || createLoad((options as StorageOptions<F, S>).storage)
+    storage,
+    save: options.save || createSave(options.storage),
+    load: options.load || createLoad(options.storage)
   };
 }
 
@@ -61,7 +52,7 @@ export default function <FullState> (...keeps: Keep<FullState, any>[]) {
   return (store: Store<FullState>) => {
 
     const payload = keeps.reduce(
-      (action, { key, load }) => ({ ...action, [key]: load(key), }),
+      (action, { key, storage, load }) => ({ ...action, [key]: load(key, storage), }),
       {}
     );
 
@@ -73,8 +64,8 @@ export default function <FullState> (...keeps: Keep<FullState, any>[]) {
     store.subscribe(() => {
       const state = store.getState();
 
-      for (const { key, selector, save } of keeps) {
-        save(key, selector(state));
+      for (const { key, selector, storage, save } of keeps) {
+        save(key, selector(state), storage);
       }
     });
   };

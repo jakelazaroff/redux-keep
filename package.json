@@ -1,6 +1,6 @@
 {
   "name": "redux-keep",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Persist your Redux store to a cookie/local storage/wherever. Dead simple, no magic.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

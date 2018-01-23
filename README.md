@@ -13,11 +13,11 @@ or
 yarn add redux-keep
 ```
 
-## Getting Started
+## Getting Started 🏎
 
-redux-keep makes persisting your store easy by using two core Redux concepts: **selectors** and **reducers**.
+redux-keep makes persisting your store easy by using two ✌🏻 core Redux concepts: **selectors** and **reducers**.
 
-### Saving your state
+### Saving your state 💾
 
 Selectors already decouple your components from the shape of your state, so why not have them do the same when you're persisting it?
 
@@ -43,7 +43,7 @@ const store = createStore(reducer);
 keepStore(keeps)(store);
 ```
 
-### Loading your state
+### Loading your state 🔄
 
 Reducers are made to calculate new state, so why not let them figure out how to merge persisted state back in?
 
@@ -62,7 +62,7 @@ export function reducer (state, action) {
 }
 ```
 
-### Customizing
+### Customizing 👩🏼‍🔧
 
 By default, your state will be stringified and parsed as JSON. If you need finer control over how your state is transformed, we accept two functions called just that!
 
@@ -84,9 +84,9 @@ keep({
 });
 ```
 
-### Writing your own storage
+### Writing your own storage 👨🏿‍🔬
 
-Writing your own storage is easy! It's just an object with three functions: `get`, `set`, and `remove`:
+Writing your own storage is easy 💪🏽! It's just an object with three functions: `get`, `set`, and `remove`:
 
 ```javascript
 export const localStorage = {

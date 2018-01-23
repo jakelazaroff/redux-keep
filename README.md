@@ -1,5 +1,8 @@
 # redux-keep
-Persist your Redux store to a cookie/local storage/wherever. Dead simple, no magic 🙅🏾‍♀️✨.
+
+Persist your Redux store to a cookie/local storage/wherever you want. Dead simple, no magic 🙅🏾‍♀️✨.
+
+[redux-persist](https://www.npmjs.com/package/redux-persist) is powerful, but the API is big and there are a lot of things to learn. redux-keep has a simple API and reuses concepts already central to redux so you can get in, get out and get on with your life.
 
 ## Installation
 
@@ -15,7 +18,7 @@ yarn add redux-keep
 
 ## Getting Started 🏎
 
-redux-keep makes persisting your store easy by using two core Redux concepts: **selectors** and **reducers**.
+redux-keep makes persisting your store simple by using two core Redux concepts: **selectors** and **reducers**.
 
 ### Saving your state 💾
 
@@ -32,9 +35,9 @@ import { selector, reducer } from './yourApp';
 
 const keeps = [
   keep({
-    key: 'saveMe',
-    selector: selector,
-    storage: localStorage
+    key: 'saveMe', // where to persist your state
+    selector: selector, // what state to persist
+    storage: localStorage // what storage engine to use
   });
 ];
 

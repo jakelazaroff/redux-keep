@@ -176,11 +176,17 @@ describe('redux-keep', () => {
 
       let _selector: sinon.SinonStub;
 
+      function notify () {
+        for (const listener of listeners) {
+          listener();
+        }
+      }
+
       beforeEach(() => {
         _selector = selector as sinon.SinonStub;
       });
 
-      it(`should call each keep's save with the data from its selector`, () => {
+      it(`should call each keep's save with the output of its selector`, () => {
         const _keep = keep(config);
         sinon.stub(_keep, 'save');
 
@@ -188,16 +194,31 @@ describe('redux-keep', () => {
         _selector.returns(selected);
 
         keepStore(_keep)(store);
-
-        for (const listener of listeners) {
-          listener();
-        }
+        notify();
 
         _selector.should.be.calledOnce;
         _selector.should.be.calledWith(state);
 
         _keep.save.should.be.calledOnce;
         _keep.save.should.be.calledWith(_keep.key, selected, _keep.storage);
+      });
+
+      it(`should not call a keep's save if its selector output hasn't changed`, () => {
+        const _keep = keep(config);
+        sinon.stub(_keep, 'save');
+
+        const selected = { a: 1 };
+        _selector.returns(selected);
+
+        keepStore(_keep)(store);
+        notify();
+        (_keep.save as sinon.SinonStub).reset();
+        notify();
+
+        _selector.should.be.calledTwice;
+        _selector.should.be.calledWith(state);
+
+        _keep.save.should.not.be.called;
       });
     });
   });

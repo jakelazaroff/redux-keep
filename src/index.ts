@@ -61,11 +61,17 @@ export default function <FullState> (...keeps: Keep<FullState, any>[]) {
       type: HYDRATE
     });
 
+    const results: { [key: string]: any; } = {};
     store.subscribe(() => {
       const state = store.getState();
 
       for (const { key, selector, storage, save } of keeps) {
-        save(key, selector(state), storage);
+        const result = selector(state);
+
+        if (result !== results[key]) {
+          results[key] = result;
+          save(key, result, storage);
+        }
       }
     });
   };

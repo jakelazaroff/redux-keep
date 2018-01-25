@@ -48,7 +48,7 @@ export function keep <F, S> (options: Options<F, S>): Keep<F, S> {
 
 export const HYDRATE = 'keep/HYDRATE';
 
-export default function <FullState> (...keeps: Keep<FullState, any>[]) {
+export default function keepStore <FullState> (...keeps: Keep<FullState, any>[]) {
   return (store: Store<FullState>) => {
 
     const payload = keeps.reduce(

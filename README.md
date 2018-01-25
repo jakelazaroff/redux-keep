@@ -24,6 +24,8 @@ redux-keep makes persisting your store simple by using two core Redux concepts: 
 
 Selectors already decouple your components from the shape of your state, so why not have them do the same when you're persisting it?
 
+Every time your store updates, redux-keep gets the output of your selector and persists it. It's smart, so it won't run again if the output doesn't change!
+
 **Note:** here we're creating the keeps in the same place as the store creation, but you can just as easily do it close to the reducers if you'd rather organize your modules that way.
 
 ```javascript
@@ -50,13 +52,15 @@ keepStore(keeps)(store);
 
 Reducers are made to calculate new state, so why not let them figure out how to merge persisted state back in?
 
+When you call `keepStore`, redux-keep will load the persisted state and dispatch it as the payload of an action with type `HYDRATE`. The persisted state will be available under the key specified in the keep options.
+
 ```javascript
-import { REHYDRATE } from 'redux-keep';
+import { HYDRATE } from 'redux-keep';
 
 export function reducer (state, action) {
   switch (action.type) {
 
-    case REHYDRATE:
+    case HYDRATE:
       return { ...action.payload.saveMe };
 
     default:
@@ -89,7 +93,11 @@ keep({
 
 ### Writing your own storage 👨🏿‍🔬
 
-Writing your own storage is simple! It's just an object with three functions: `get`, `set`, and `remove`.
+Writing your own storage is simple! It's just an object with three functions: `get`, `set`, and `remove`. They'll each receive the keep's key as the first argument.
+
+`get` should return the persisted state — preferably as a string, since the default `load` function tries to parse it as JSON!
+
+`set` receives the output of the selector as its second argument. Unless you use a custom `save` function, it'll already by stringified.
 
 ```javascript
 export const localStorage = {
